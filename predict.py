@@ -5,8 +5,15 @@ import joblib
 import numpy as np
 import pandas as pd
 
-# Load the pre-trained model (make sure to change the path to where your model is stored)
-model = joblib.load('Phishing_email_RF')
+import joblib
+import zipfile
+
+# Unzip the model if it's compressed
+with zipfile.ZipFile('Phishing_email_RF.zip', 'r') as zip_ref:
+    zip_ref.extractall()
+
+# Load the model
+model = joblib.load('Phishing_email_RF.pkl')
 
 # Title of the app
 st.title("Phishing Email Detection")
