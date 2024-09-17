@@ -1,30 +1,20 @@
 import streamlit as st
-import rarfile
+import gdown  # You'll need to install this package
 import joblib
 import os
-import urllib.request
 
-# URL of the .rar file in your GitHub repo
-url = "Phishing_email_RF.rar"
+# Define the URL of your Google Drive file
+url = 'https://drive.google.com/file/d/12Nbn9K2h3TqRgcUVOw_b-pLNT5yadapG/view?usp=drive_link'
 
-# Download the .rar file
-rar_filename = "Phishing_email_RF.rar"
-if not os.path.exists(rar_filename):
-    st.write("Downloading the model...")
-    urllib.request.urlretrieve(url, rar_filename)
+# Download the file from Google Drive (only if it does not exist locally)
+if not os.path.exists('Phishing_email_RF.pkl'):
+    gdown.download(url, 'Phishing_email_RF.pkl', quiet=False)
 
-# Extract the .rar file
-extracted_folder = "extracted_model"
-if not os.path.exists(extracted_folder):
-    os.makedirs(extracted_folder)
+# Load the model
+model = joblib.load('Phishing_email_RF.pkl')
 
-    st.write("Extracting the model...")
-    with rarfile.RarFile(rar_filename) as rf:
-        rf.extractall(extracted_folder)
+# Your prediction logic goes here
 
-# Load the model (assuming the extracted file is a .pkl file)
-model_path = os.path.join(extracted_folder, "Phishing_email_RF.pkl")
-model = joblib.load(model_path)
 
 # Now you can use the model for predictions
 st.title("Phishing Email Detection")
